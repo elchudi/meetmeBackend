@@ -38,7 +38,7 @@ class User(Base):
     img = Column(String)
     user_type = Column(String)
  
-    def __init__(self, telephone, token_push, name, img, user_type):
+    def __init__(self, user_id, extra_data, name, img, user_type):
         self.user_id  = user_id
         self.extra_data = extra_data
         self.name  = name
@@ -52,11 +52,11 @@ class Connection(Base):
     __tablename__ = 'connection'
     
     id = Column(Integer, autoincrement=True, primary_key=True, unique=True)
-    user_1 = Column(String, ForeignKey('users.users_id'), nullable=False  )
-    user_2 = Column(String, ForeignKey('users.users_id'), nullable=False  )
+    user_1 = Column(String, ForeignKey('users.user_id'), nullable=False  )
+    user_2 = Column(String, ForeignKey('users.user_id'), nullable=False  )
     
 
-    def __init__(self, account_id, user_id):
+    def __init__(self, user_1, user_2):
         self.user_1 = user_1
         self.user_2 = user_2
 
@@ -69,10 +69,10 @@ Base.metadata.create_all(engine)
 
 #print zone1
 
-accounts =  engine.execute("select * from accounts")
+accounts =  engine.execute("select * from users")
 for row in accounts:
     print row
-accounts =  engine.execute("select * from shared_account")
+accounts =  engine.execute("select * from connection")
 for row in accounts:
     print row
 

@@ -38,7 +38,7 @@ def get_connections():
     connections =  get_connection(user_id)
     print connections
     to_ret = '{"meetmeup":['
-    for c in connections
+    for c in connections:
         encoded = ORMEncoder().encode(c)
         print encoded
         #print json.dumps(a.__dict__, skipkeys=True)
