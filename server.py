@@ -50,9 +50,9 @@ def get_connections():
     return to_ret
 
 
-@get('/get_user')
+@post('/get_user')
 def get_user():
-    user_id = request.params.get('user_id') 
+    user_id = request.json['user_id']
     user = get_user(user_id)   
     return ORMEncoder().encode(user)
 
@@ -117,4 +117,4 @@ def add_connection(user_1, user_2):
     return True
  
 if __name__ == "__main__":
-    run(host='0.0.0.0', port=8080)
+    run(host='0.0.0.0', port=8090)
