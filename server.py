@@ -4,8 +4,6 @@ import json
 import orm
 from json import JSONEncoder
 
-
-
 """
 @post('/add_account')
 def add_account():
@@ -16,6 +14,7 @@ Method should not be really implemented, only for testing purposes
 """
 @get('/get_users')
 def get_users():
+    print "get users"
     session = orm.get_orm_session()
     users = session.query(orm.User).all()
     to_ret = '{"meetmeup":['
@@ -33,6 +32,7 @@ def get_users():
 
 @post('/get_connections')
 def get_connections():
+    print "get connetctions"
     user_id = request.json['user_id']
     print user_id
     connections =  get_connection(user_id)
@@ -52,22 +52,30 @@ def get_connections():
 
 @post('/get_user')
 def get_user():
+    print "get usrryy"
     user_id = request.json['user_id']
     user = get_user(user_id)   
     return ORMEncoder().encode(user)
 
 
 @post('/add_connection')
-def add_user_to_account_get():
+def add_connection():
+    print "add connection"
+    print request.json
     user_1 = request.json['user_1']
     user_2 = request.json['user_2']
-    return str(add_user_to_account(account_number, telephone))
+    return str(add_connection(user_1, user_2))
 
 @post('/add_user')
 def add_user():
     print "adding user"
     print request.json
-    print dir(request.json)
+    print len( request.json)
+    print  request.json['user_id']
+    print request.json['extra_data']
+    print request.json['name']
+    print request.json['user_type']
+    print dir(request)
     user_id = request.json['user_id']
     extra_data = request.json['extra_data']
     name = request.json['name']
@@ -78,7 +86,7 @@ def add_user():
     session.add_all([user])
     session.commit()
     session.bind.dispose()
-    print "useradde ", telephone, token
+    print "useradde ", user_id, name
     return "OK"
     
 
@@ -91,7 +99,7 @@ class ORMEncoder(JSONEncoder):
    
 def get_connection(user_id):
     session = orm.get_orm_session()
-    connections = session.query(orm.Connection).join(orm.User).filter(orm.User.user_id==user_1).all()
+    connections = session.query(orm.Connection).filter_by(user_1=user_id).all()
     print "connections", connections
     session.bind.dispose()
     if connections:
@@ -108,6 +116,7 @@ def get_user_for_id(user_id):
     return None
 
 def add_connection(user_1, user_2):
+    print "add connection method", user_1, user_2
     connection = orm.Connection(user_1, user_2)
     connection_back = orm.Connection(user_2, user_1)
     session = orm.get_orm_session()
