@@ -57,11 +57,12 @@ class Connection(Base):
     
 
     def __init__(self, user_1, user_2):
+        print "init de new connection", user_1, user_2
         self.user_1 = user_1
         self.user_2 = user_2
 
     def __repr__(self):
-        return "<Connection('%d','%d','%d')>" % (self.id, self.account_id, self.user_id)
+        return "<Connection('%d','%s','%s')>" % (self.id, self.user_1, self.user_2)
 
 Base.metadata.create_all(engine) 
 
